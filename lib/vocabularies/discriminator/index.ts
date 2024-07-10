@@ -24,13 +24,14 @@ const def: CodeKeywordDefinition = {
   error,
   code(cxt: KeywordCxt) {
     const {gen, data, schema, parentSchema, it} = cxt
+    const {self} = it
     const {oneOf} = parentSchema
     if (!it.opts.discriminator) {
       throw new Error("discriminator: requires discriminator option")
     }
     const tagName = schema.propertyName
     if (typeof tagName != "string") throw new Error("discriminator: requires propertyName")
-    if (schema.mapping) throw new Error("discriminator: mapping is not supported")
+    if (schema.mapping) self.logger.warn("discriminator: mapping is not supported and will be ignored")
     if (!oneOf) throw new Error("discriminator: requires oneOf keyword")
     const valid = gen.let("valid", false)
     const tag = gen.const("tag", _`${data}${getProperty(tagName)}`)
