@@ -68,7 +68,12 @@ import DefaultUriResolver from "./runtime/uri"
 const defaultRegExp: RegExpEngine = (str, flags) => new RegExp(str, flags)
 defaultRegExp.code = "new RegExp"
 
-const META_IGNORE_OPTIONS: (keyof Options)[] = ["removeAdditional", "useDefaults", "coerceTypes"]
+const META_IGNORE_OPTIONS: (keyof Options)[] = [
+  "removeAdditional",
+  "removeUnevaluated",
+  "useDefaults",
+  "coerceTypes",
+]
 const EXT_SCOPE_NAMES = new Set([
   "validate",
   "serialize",
@@ -117,6 +122,7 @@ export interface CurrentOptions {
   loadSchema?: (uri: string) => Promise<AnySchemaObject>
   // options to modify validated data:
   removeAdditional?: boolean | "all" | "failing"
+  removeUnevaluated?: boolean
   useDefaults?: boolean | "empty"
   coerceTypes?: boolean | "array"
   // advanced options:
