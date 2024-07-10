@@ -1,3 +1,32 @@
+# BRM Setup
+
+To update `ajv`, the upstream needs to be manually merged into `master`:
+
+```
+git remote add upstream https://github.com/ajv-validator/ajv
+git fetch upstream
+git checkout master
+git merge upstream/master
+```
+
+This will likely cause a merge conflict, especially for the version in package.json.
+Resolve this by updating it to the new version from upstream + 1 minor version, but with a `-fork.1` suffix (always reset the fork version to `1`).
+For example, if upstream released `8.17.3`, update the version to `8.18.0-fork.1`, then commit assuming all other merge conflicts are resolved.
+
+Then publish a new version (insert the version you just put in package.json for `$VERSION`, e.g. `8.18.0-fork.1`):
+
+```
+git push
+npm publish
+git tag $VERSION
+git push --tags
+```
+
+Now in our main repo, search+replace all old version references in all package.json files with the new version you just published, then run `npm install` and commit the diff after making sure everything works.
+
+# Original Readme
+
+
 <img align="right" alt="Ajv logo" width="160" src="https://ajv.js.org/img/ajv.svg">
 
 &nbsp;
